@@ -2,7 +2,14 @@ name: "Veracode Safe to Deploy"
 description: "Standalone Github Action for blocking deployment"
 author: "Narayanan Chandran"
 
+inputs:
+  vid:
+    description: "Veracode API ID"
+    required: true
 
+  vkey:
+    description: "Veracode API Key"
+    required: true
 
 runs:
   using: composite
@@ -13,8 +20,8 @@ runs:
       with:
           action: getPolicyNameByProfileName
           token: ${{ github.event.client_payload.token }}
-          vid: ${{ secrets.VERACODE_API_ID }}
-          vkey: ${{ secrets.VERACODE_API_KEY }}
+          vid: ${{ inputs.vid }}
+          vkey: ${{ inputs.vkey }}
           appname: ${{ github.event.client_payload.user_config.profile_name }}
           source_repository: ${{ github.event.client_payload.repository.full_name }}
 
