@@ -12,22 +12,5 @@ inputs:
     required: true
 
 runs:
-  using: composite
-
-  steps:
-    - name: Resolve Veracode Application Profile → entity ID
-      continue-on-error: true
-      uses: veracode/github-actions-integration-helper@v0.1.11
-      with:
-          action: getPolicyNameByProfileName
-          token: ${{ github.event.client_payload.token }}
-          vid: ${{ inputs.vid }}
-          vkey: ${{ inputs.vkey }}
-          appname: ${{ github.event.client_payload.user_config.profile_name }}
-          name: ${{ github.event.client_payload.user_config.profile_name }}
-          source_repository: ${{ github.event.client_payload.repository.full_name }}
-
-    - name: Run the custom action
-      uses: ./custom-actions
-  
-
+  using: "node24"
+  main: "dist/index.js"
