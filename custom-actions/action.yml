@@ -1,0 +1,7 @@
+name: "Veracode Safe to Deploy - Evaluation"
+
+description: "Evaluate Veracode results"
+
+runs:
+  using: node24
+  main: dist/index.js
