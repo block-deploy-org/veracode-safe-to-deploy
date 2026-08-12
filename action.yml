@@ -23,6 +23,7 @@ runs:
           vid: ${{ inputs.vid }}
           vkey: ${{ inputs.vkey }}
           appname: ${{ github.event.client_payload.user_config.profile_name }}
+          name: ${{ github.event.client_payload.user_config.profile_name }}
           source_repository: ${{ github.event.client_payload.repository.full_name }}
 
     - name: Run the custom action
