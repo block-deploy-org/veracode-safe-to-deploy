@@ -1,0 +1,9 @@
+name: "Veracode Safe to Deploy"
+description: "Standalone Github Action for blocking deployment"
+author: "Narayanan Chandran"
+
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
+
