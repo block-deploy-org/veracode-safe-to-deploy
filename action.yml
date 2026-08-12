@@ -3,7 +3,22 @@ description: "Standalone Github Action for blocking deployment"
 author: "Narayanan Chandran"
 
 
+
 runs:
-  using: "node24"
-  main: "dist/index.js"
+  using: composite
+
+  steps:
+    - name: Resolve Veracode Application Profile → entity ID
+      uses: veracode/github-actions-integration-helper@v0.1.11
+      with:
+          action: getPolicyNameByProfileName
+          token: ${{ github.event.client_payload.token }}
+          vid: ${{ secrets.VERACODE_API_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY }}
+          appname: ${{ github.event.client_payload.user_config.profile_name }}
+          source_repository: ${{ github.event.client_payload.repository.full_name }}
+
+    - name: Run the custom action
+      uses: ./custom-actions
+  
 
