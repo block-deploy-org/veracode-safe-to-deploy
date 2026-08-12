@@ -16,6 +16,7 @@ runs:
 
   steps:
     - name: Resolve Veracode Application Profile → entity ID
+      continue-on-error: true
       uses: veracode/github-actions-integration-helper@v0.1.11
       with:
           action: getPolicyNameByProfileName
