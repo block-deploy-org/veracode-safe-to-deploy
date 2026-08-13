@@ -4,7 +4,7 @@
     "module": "commonjs",
     
     "declaration": true,
-    "outDir": "dist",
+    "outDir": "js-actions/dist",
     "rootDir": "src",
 
     "strict": true,

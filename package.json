@@ -15,7 +15,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc",
-    "pack": "ncc build src/index.ts -o dist",
+    "pack": "ncc build src/index.ts -o js-actions/dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
