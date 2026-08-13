@@ -41,29 +41,6 @@ inputs:
     required: true
   
 
-
 runs:
-  using: composite
-  steps:
-    - name: GitHub API Request to create a check
-      uses: octokit/request-action@v3.0.0
-      id: create_check_run
-      with:
-        route: POST /repos/{owner}/{repo}/check-runs
-      env:
-        GITHUB_TOKEN: ${{ inputs.github_token }}
-        INPUT_OWNER: ${{ inputs.repository_owner }}
-        INPUT_REPO: ${{ inputs.repository_name }}
-        INPUT_NAME: ${{ inputs.check_run_name }}
-        INPUT_HEAD_SHA: ${{ inputs.head_sha }}
-        INPUT_DETAILS_URL: "https://github.com/${{ inputs.repository }}/actions/runs/${{ inputs.run_id }}"
-
-    - name: "Run Veracode Safe to Deploy"
-      uses: ./js-actions
-      with:
-        vid: ${{ inputs.vid }}
-        vkey: ${{ inputs.vkey }}
-        decision_mode: ${{ inputs.decision_mode }}
-        source_repository: ${{ inputs.source_repository }}
-        check-result: ${{ steps.create_check_run.outputs.result }}
-
+  using: node24
+  main: dist/index.js
