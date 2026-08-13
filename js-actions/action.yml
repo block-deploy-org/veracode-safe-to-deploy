@@ -1,4 +1,4 @@
-name: "Veracode Safe to Deploy - Evaluation"
+name: "Veracode Safe to Deploy - javascript action"
 
 description: "Evaluate Veracode results"
 
