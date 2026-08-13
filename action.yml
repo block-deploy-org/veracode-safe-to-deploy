@@ -5,11 +5,11 @@ author: "Narayanan Chandran"
 inputs:
   vid:
     description: "Veracode API ID"
-    required: true
+    required: false
 
   vkey:
     description: "Veracode API Key"
-    required: true
+    required: false
   
   decision_mode:
     description: "Block the deployment (enforcement mode) or record the verdict and continue (observer mode)"

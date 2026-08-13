@@ -31863,20 +31863,13 @@ const core = __importStar(__nccwpck_require__(7484));
 const github = __importStar(__nccwpck_require__(3228));
 async function run() {
     try {
-        const vid = core.getInput('vid', { required: true });
-        const vkey = core.getInput('vkey', { required: true });
-        const decisionMode = core.getInput('decision_mode', { required: true });
-        const sourceRepoName = core.getInput('source_repository', { required: true });
+        const decisionMode = core.getInput('decision_mode');
+        const sourceRepoName = core.getInput('source_repository');
         const [owner, repo] = sourceRepoName.split('/');
-        const token = core.getInput('token', { required: true });
+        const token = core.getInput('token');
         const octokit = github.getOctokit(token);
-        const response = await octokit.rest.repos.getContent({
-            owner,
-            repo,
-            path: 'values/prod-values.yml',
-        });
+        console.log(owner, repo, token, JSON.stringify(octokit));
         core.info(`Fetched Veracode config from ${owner}/${repo}`);
-        console.log(response);
     }
     catch (error) {
         core.setFailed(`Action failed: ${error instanceof Error ? error.message : String(error)}`);
