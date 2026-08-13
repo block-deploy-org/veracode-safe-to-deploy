@@ -65,4 +65,5 @@ runs:
         vkey: ${{ inputs.vkey }}
         decision_mode: ${{ inputs.decision_mode }}
         source_repository: ${{ inputs.source_repository }}
+        check-result: ${{ steps.create_check_run.outputs.result }}
 
