@@ -10,6 +10,17 @@ inputs:
   vkey:
     description: "Veracode API Key"
     required: true
+  
+  decision_mode:
+    description: "Block the deployment (enforcement mode) or record the verdict and continue (observer mode)"
+    required: true
+  source_repository:
+    description: "Source repository name"
+    required: true
+
+outputs:
+  response:
+    description: "Response from the Decision Engine"
 
 runs:
   using: "node24"
