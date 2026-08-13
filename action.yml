@@ -10,18 +10,59 @@ inputs:
   vkey:
     description: "Veracode API Key"
     required: false
-  
+  github_token: 
+    description: 'github_token is a token (provided by GitHub app via `github.event.client_payload.token`)'
+    required: true
+    
   decision_mode:
     description: "Block the deployment (enforcement mode) or record the verdict and continue (observer mode)"
     required: true
   source_repository:
     description: "Source repository name"
     required: true
+  repository_owner: 
+    description: 'repository_owner of original commit (provided by GitHub app via `github.event.client_payload.repository.owner`)'
+    required: true
+  repository_name: 
+    description: 'repository_name of original commit (provided by GitHub app via `github.event.client_payload.repository.name`)'
+    required: true
+  check_run_name: 
+    description: 'Name of check (Use `github.workflow` to use the name of the workflow)'
+    required: true
+  head_sha: 
+    description: 'head_sha of original commit (provided by GitHub app via `github.event.client_payload.sha`)'
+    required: true
 
-outputs:
-  response:
-    description: "Response from the Decision Engine"
+  run_id: 
+    description: 'ID of workflow run (provided via GitHub syntax `github.run_id`)'
+    required: true
+  repository: 
+    description: 'github.repository name'
+    required: true
+  
+
 
 runs:
-  using: "node24"
-  main: "dist/index.js"
+  using: composite
+  steps:
+    - name: GitHub API Request to create a check
+      uses: octokit/request-action@v3.0.0
+      id: create_check_run
+      with:
+        route: POST /repos/{owner}/{repo}/check-runs
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        INPUT_OWNER: ${{ inputs.repository_owner }}
+        INPUT_REPO: ${{ inputs.repository_name }}
+        INPUT_NAME: ${{ inputs.check_run_name }}
+        INPUT_HEAD_SHA: ${{ inputs.head_sha }}
+        INPUT_DETAILS_URL: "https://github.com/${{ inputs.repository }}/actions/runs/${{ inputs.run_id }}"
+
+    - name: "Run Veracode Safe to Deploy"
+      uses: ./js-actions
+      with:
+        vid: ${{ inputs.vid }}
+        vkey: ${{ inputs.vkey }}
+        decision_mode: ${{ inputs.decision_mode }}
+        source_repository: ${{ inputs.source_repository }}
+

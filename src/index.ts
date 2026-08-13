@@ -1,5 +1,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import { Octokit } from '@octokit/rest';
+import * as Checks from './namespaces/Checks';
 
 async function run() {
   try {
@@ -9,8 +11,11 @@ async function run() {
     const sourceRepoName = core.getInput('source_repository');
     const [owner, repo] = sourceRepoName.split('/');
     const token = core.getInput('token');
-    const octokit = github.getOctokit(token);
-    console.log(owner, repo, token, JSON.stringify(octokit));
+    
+  
+   
+   
+    
 
 
     
