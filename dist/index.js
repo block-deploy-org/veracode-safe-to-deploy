@@ -31870,15 +31870,24 @@ async function run() {
         const headSha = core.getInput("head_sha");
         const repository = core.getInput("repository");
         const artifact_name = core.getInput("artifact_name");
-        const runId = core.getInput("run_id");
-        const detailsUrl = `https://github.com/${repository}/actions/runs/${runId}`;
+        const check_run_id = core.getInput("run_id");
+        const detailsUrl = `https://github.com/${repository}/actions/runs/${check_run_id}`;
         const octokit = github.getOctokit(token);
         const response = await octokit.rest.checks.update({
             owner,
             repo,
             name,
+            check_run_id,
             head_sha: headSha,
-            details_url: detailsUrl
+            status: 'completed',
+            conclusion: 'success',
+            details_url: detailsUrl,
+            images: [
+                {
+                    alt: 'Super bananas',
+                    image_url: 'https://www.clipartmax.com/png/small/4-46937_banana-icon-clipart-bananas-icon-png.png'
+                }
+            ]
         });
         const checkRun = response.data;
         core.setOutput("check_run_id", checkRun.id);
