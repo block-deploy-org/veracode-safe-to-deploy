@@ -5,23 +5,16 @@ import * as github from '@actions/github';
 async function run() {
    try {
         const token = core.getInput("github_token");
-
         const owner = core.getInput("repository_owner");
-
         const repo = core.getInput("repository_name");
-
         const name = core.getInput("check_run_name");
-
         const headSha = core.getInput("head_sha");
-
         const repository = core.getInput("repository");
-
         const runId = core.getInput("run_id");
 
         const detailsUrl = `https://github.com/${repository}/actions/runs/${runId}`;
 
         const octokit = github.getOctokit(token);
-
         const response = await octokit.rest.checks.create({
             owner,
             repo,
