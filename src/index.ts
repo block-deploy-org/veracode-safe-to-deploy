@@ -12,11 +12,6 @@ async function run() {
         const repository = core.getInput("repository");
         const artifacts_list = core.getInput("artifacts_list");
 
-        console.log(`Owner: ${owner}`);
-        console.log(`Repo: ${repo}`);
-        console.log(`Repository: ${repository}`);
-        console.log(`Artifacts List: ${artifacts_list}`);
-        console.log(`Branch: ${branch}`);
         const octokit = github.getOctokit(token);
          const branchObj = await octokit.request(`GET /repos/{owner}/{repo}/branches/{branch}`,{  owner,
             repo,
@@ -26,9 +21,9 @@ async function run() {
             }
         });
         
-        console.log(JSON.stringify(branchObj));
+
         const sha = branchObj.data.commit?.sha;
-        console.log(`Branch SHA: ${sha}`);
+
         const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{sha}/check-runs`,{  owner,
             repo,
             sha,
@@ -36,10 +31,19 @@ async function run() {
                 'X-GitHub-Api-Version': '2026-03-10'
             }
         });
-        const check_run_id = commits.check_runs?.[0]?.id;
+        const check_run_id = commits.data.check_runs?.[0]?.id;
         console.log(`Check Run ID: ${check_run_id}`);
-        const checkRunObj = await octokit.request(`GET /repos/{owner}/{repo}/check-runs/{check_run_id}`);
-        console.log(`Check Run Object: ${JSON.stringify(checkRunObj)}`);
+        const checkRunResponse = await octokit.request(`GET /repos/{owner}/{repo}/check-runs/{check_run_id}`,
+            {
+                owner,
+                repo,
+                check_run_id,
+                headers: {
+                    'X-GitHub-Api-Version': '2026-03-10'
+                }
+            }
+        );
+        const checkRunObj = checkRunResponse.data;
 
         checkRunObj.status = "completed";
         checkRunObj.conclusion = "success";
