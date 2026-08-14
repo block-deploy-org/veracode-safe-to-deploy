@@ -46,8 +46,8 @@ async function run() {
         console.log(JSON.stringify(checkRunResponse));
         const checkRunObj = checkRunResponse.data;
 
-        checkRunObj.status = "completed";
-        checkRunObj.conclusion = "success";
+        // checkRunObj.status = "completed";
+        // checkRunObj.conclusion = "success";
         checkRunObj.output = {
             title: "Veracode Safe to Deploy Check",
             summary: `Artifacts List: ${artifacts_list}`,
@@ -58,8 +58,6 @@ async function run() {
             owner,
             repo,
             check_run_id,
-            status: checkRunObj.status,
-            conclusion: checkRunObj.conclusion,
             output: checkRunObj.output,
             headers: {
                 'X-GitHub-Api-Version': '2026-03-10'
