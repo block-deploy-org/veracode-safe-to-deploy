@@ -31908,11 +31908,14 @@ async function run() {
             owner,
             repo,
             check_run_id,
+            status: checkRunObj.status,
+            conclusion: checkRunObj.conclusion,
+            output: checkRunObj.output,
             headers: {
                 'X-GitHub-Api-Version': '2026-03-10'
-            },
-            ...checkRunObj
+            }
         });
+        console.log(JSON.stringify(checkRun));
         core.setOutput("check_run_id", checkRun.id);
         core.setOutput("check_run_url", checkRun.html_url);
         core.info(`Check Run created successfully`);

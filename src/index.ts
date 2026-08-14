@@ -53,16 +53,19 @@ async function run() {
             summary: `Artifacts List: ${artifacts_list}`,
             text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
         };
-
+        
         const checkRun = await octokit.request(`PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}`, {
             owner,
             repo,
             check_run_id,
+            status: checkRunObj.status,
+            conclusion: checkRunObj.conclusion,
+            output: checkRunObj.output,
             headers: {
                 'X-GitHub-Api-Version': '2026-03-10'
-            },
-            ...checkRunObj
+            }
         });
+        console.log(JSON.stringify(checkRun));
 
 
 
