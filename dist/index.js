@@ -31895,6 +31895,7 @@ async function run() {
                 'X-GitHub-Api-Version': '2026-03-10'
             }
         });
+        console.log(JSON.stringify(checkRunResponse));
         const checkRunObj = checkRunResponse.data;
         checkRunObj.status = "completed";
         checkRunObj.conclusion = "success";

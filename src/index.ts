@@ -43,6 +43,7 @@ async function run() {
                 }
             }
         );
+        console.log(JSON.stringify(checkRunResponse));
         const checkRunObj = checkRunResponse.data;
 
         checkRunObj.status = "completed";
