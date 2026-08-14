@@ -31887,6 +31887,7 @@ async function run() {
         console.log(`Branch SHA: ${branchSha}`);
         const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{branchSha}/check-runs`, { owner,
             repo,
+            commit_sha: branchSha,
             headers: {
                 'X-GitHub-Api-Version': '2026-03-10'
             }
