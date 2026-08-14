@@ -31873,7 +31873,7 @@ async function run() {
         const runId = core.getInput("run_id");
         const detailsUrl = `https://github.com/${repository}/actions/runs/${runId}`;
         const octokit = github.getOctokit(token);
-        const response = await octokit.rest.checks.create({
+        const response = await octokit.rest.checks.update({
             owner,
             repo,
             name,
