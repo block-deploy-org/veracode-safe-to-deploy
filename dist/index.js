@@ -31873,21 +31873,13 @@ async function run() {
         const check_run_id = core.getInput("run_id");
         const detailsUrl = `https://github.com/${repository}/actions/runs/${check_run_id}`;
         const octokit = github.getOctokit(token);
-        const response = await octokit.rest.checks.update({
+        const response = await octokit.request('GET /repos/{owner}/{repo}/check-runs/{check_run_id}', {
             owner,
             repo,
-            name,
             check_run_id,
-            head_sha: headSha,
-            status: 'completed',
-            conclusion: 'success',
-            details_url: detailsUrl,
-            images: [
-                {
-                    alt: 'Super bananas',
-                    image_url: 'https://www.clipartmax.com/png/small/4-46937_banana-icon-clipart-bananas-icon-png.png'
-                }
-            ]
+            headers: {
+                'X-GitHub-Api-Version': '2026-03-10'
+            }
         });
         const checkRun = response.data;
         core.setOutput("check_run_id", checkRun.id);
