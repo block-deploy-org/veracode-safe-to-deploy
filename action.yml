@@ -26,9 +26,12 @@ inputs:
     required: true
   head_sha: 
     description: 'head_sha of original commit (provided by GitHub app via `github.event.client_payload.sha`)'
-    required: true
+    required: false
   repository: 
     description: 'github.repository name'
+    required: true
+  source_branch:
+    description: 'source branch of the pull request'
     required: true
   
 

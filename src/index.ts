@@ -8,18 +8,26 @@ async function run() {
         const owner = core.getInput("repository_owner");
         const repo = core.getInput("repository_name");
     
-        const headSha = core.getInput("head_sha");
+        const branch = core.getInput("source_branch");
         const repository = core.getInput("repository");
         const artifacts_list = core.getInput("artifacts_list");
 
         console.log(`Owner: ${owner}`);
         console.log(`Repo: ${repo}`);
-        console.log(`Head SHA: ${headSha}`);
         console.log(`Repository: ${repository}`);
         console.log(`Artifacts List: ${artifacts_list}`);
-        
+        console.log(`Branch: ${branch}`);
         const octokit = github.getOctokit(token);
-        const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{headSha}/check-runs`,{  owner,
+         const branchObj = await octokit.request(`GET /repos/{owner}/{repo}/branches/{branch}`,{  owner,
+            repo,
+            headers: {
+                'X-GitHub-Api-Version': '2026-03-10'
+            }
+        });
+        const branchSha = branchObj.commit?.sha;
+        console.log(`Branch SHA: ${branchSha}`);
+
+        const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{branchSha}/check-runs`,{  owner,
             repo,
             headers: {
                 'X-GitHub-Api-Version': '2026-03-10'
