@@ -19,7 +19,13 @@ async function run() {
         console.log(`Artifacts List: ${artifacts_list}`);
         
         const octokit = github.getOctokit(token);
-        const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{headSha}`);
+        const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{headSha}`,{  owner,
+            repo,
+            ref: headSha,
+            headers: {
+                'X-GitHub-Api-Version': '2026-03-10'
+            }
+        });
         const check_run_id = commits.check_runs?.[0]?.id;
         console.log(`Check Run ID: ${check_run_id}`);
         const checkRunObj = await octokit.request(`GET /repos/{owner}/{repo}/check-runs/{check_run_id}`);
