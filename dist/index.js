@@ -31869,6 +31869,7 @@ async function run() {
         const name = core.getInput("check_run_name");
         const headSha = core.getInput("head_sha");
         const repository = core.getInput("repository");
+        const artifact_name = core.getInput("artifact_name");
         const runId = core.getInput("run_id");
         const detailsUrl = `https://github.com/${repository}/actions/runs/${runId}`;
         const octokit = github.getOctokit(token);
