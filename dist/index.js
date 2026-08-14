@@ -31869,6 +31869,11 @@ async function run() {
         const headSha = core.getInput("head_sha");
         const repository = core.getInput("repository");
         const artifacts_list = core.getInput("artifacts_list");
+        console.log(`Owner: ${owner}`);
+        console.log(`Repo: ${repo}`);
+        console.log(`Head SHA: ${headSha}`);
+        console.log(`Repository: ${repository}`);
+        console.log(`Artifacts List: ${artifacts_list}`);
         const octokit = github.getOctokit(token);
         const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{headSha}`);
         const check_run_id = commits.check_runs?.[0]?.id;
