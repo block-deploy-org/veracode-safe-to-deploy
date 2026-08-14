@@ -20,13 +20,15 @@ async function run() {
         const octokit = github.getOctokit(token);
          const branchObj = await octokit.request(`GET /repos/{owner}/{repo}/branches/{branch}`,{  owner,
             repo,
+            branch,
             headers: {
                 'X-GitHub-Api-Version': '2026-03-10'
             }
         });
-        ;
+        
         console.log(JSON.stringify(branchObj));
-
+        const branchSha = branchObj.data.commit?.sha;
+        console.log(`Branch SHA: ${branchSha}`);
         const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{branchSha}/check-runs`,{  owner,
             repo,
             headers: {
