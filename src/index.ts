@@ -19,9 +19,8 @@ async function run() {
         console.log(`Artifacts List: ${artifacts_list}`);
         
         const octokit = github.getOctokit(token);
-        const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{headSha}`,{  owner,
+        const commits = await octokit.request(`GET /repos/{owner}/{repo}/commits/{headSha}/check-runs`,{  owner,
             repo,
-            ref: headSha,
             headers: {
                 'X-GitHub-Api-Version': '2026-03-10'
             }
