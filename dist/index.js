@@ -31866,6 +31866,7 @@ async function run() {
         const token = core.getInput("github_token");
         const owner = core.getInput("repository_owner");
         const repo = core.getInput("repository_name");
+        const decision_mode = core.getInput("decision_mode");
         const branch = core.getInput("source_branch");
         const repository = core.getInput("repository");
         const artifacts_list = core.getInput("artifacts_list");
@@ -31896,12 +31897,50 @@ async function run() {
             }
         });
         console.log(JSON.stringify(checkRunResponse));
-        const checkRunObj = checkRunResponse.data;
-        checkRunObj.output = {
-            title: "Veracode Safe to Deploy Check",
-            summary: `Artifacts List: ${artifacts_list}`,
-            text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
+        const requestBody = {
+            "type": "hello",
+            "target": "target",
+            "scope": [
+                {
+                    "businessApplicationId": "",
+                    "businessApplicationVersion": "",
+                    "assetSnapshotIds": artifacts_list.split(",")
+                }
+            ]
         };
+        const checkRunObj = checkRunResponse.data;
+        const response = await fetch("https://moocher-uproot-cobbler.ngrok-free.dev/decisions/evaluate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody)
+        });
+        const responseBody = await response.json();
+        if (responseBody.verdict === "SAFE") {
+            checkRunObj.output = {
+                title: "Veracode : Safe to Deploy !",
+                summary: `Artifacts List: ${artifacts_list}`,
+                text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
+            };
+            core.info("Veracode Deply Decision: Allow");
+        }
+        else if (responseBody.verdict === "UNSAFE" && decision_mode === "observer") {
+            checkRunObj.output = {
+                title: "Warning! Unsafe to Deploy, Pipeline is in Observer Mode",
+                summary: `Artifacts List: ${artifacts_list}`,
+                text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
+            };
+            core.info("Veracode Deply Decision: Observer Mode: Allow");
+        }
+        else {
+            checkRunObj.output = {
+                title: "Blocking Deplyment! Unsafe to Deploy",
+                summary: `Artifacts List: ${artifacts_list}`,
+                text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
+            };
+            core.setFailed("Veracode Deply Decision: Deny");
+        }
         const checkRun = await octokit.request(`PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}`, {
             owner,
             repo,
@@ -31915,8 +31954,6 @@ async function run() {
         core.setOutput("check_run_id", checkRun.id);
         core.setOutput("check_run_url", checkRun.html_url);
         core.info(`Check Run created successfully`);
-        core.info(`ID: ${checkRun.id}`);
-        core.info(`URL: ${checkRun.html_url}`);
     }
     catch (error) {
         core.setFailed("Error in Pipeline: " + error.message);
