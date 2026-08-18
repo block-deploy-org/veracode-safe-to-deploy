@@ -33,7 +33,7 @@ async function run() {
         });
         const check_run_id = commits.data.check_runs?.[0]?.id;
         console.log(`Check Run ID: ${check_run_id}`);
-        const checkRunResponse = await octokit.request(`GET /repos/{owner}/{repo}/check-runs/{check_run_id}`,
+        const checkRunResponse: any = await octokit.request(`GET /repos/{owner}/{repo}/check-runs/{check_run_id}`,
             {
                 owner,
                 repo,
@@ -66,9 +66,9 @@ async function run() {
             },
             body: JSON.stringify(requestBody)
         });
-
+        
         const responseBody = await response.json();
-        if(responseBody.verdict === "SAFE") {
+        if(responseBody.verdict === "SAFE" ) {
             checkRunObj.output = {
                 title: "Veracode : Safe to Deploy !",
                 summary: `Artifacts List: ${artifacts_list}`,
@@ -88,7 +88,7 @@ async function run() {
                 summary: `Artifacts List: ${artifacts_list}`,
                 text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
             };
-            core.setFailed("Veracode Deply Decision: Deny");
+            core.setFailed("Veracode Deploy Decision: Deny");
         }
 
 
@@ -106,18 +106,10 @@ async function run() {
         });
         console.log(JSON.stringify(checkRun));
 
+        core.setOutput("status", responseBody.verdict);
+        core.setOutput("summary", `Repository: ${repository}\nArtifacts List: ${artifacts_list}`);
 
-
-
-
-
-    
         
-
-        core.setOutput("check_run_id", checkRun.id);
-        core.setOutput("check_run_url", checkRun.html_url);
-
-        core.info(`Check Run created successfully`);
     
     } catch (error: any) {
         core.setFailed("Error in Pipeline: " + error.message);

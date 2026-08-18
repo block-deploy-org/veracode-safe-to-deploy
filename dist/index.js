@@ -31939,7 +31939,7 @@ async function run() {
                 summary: `Artifacts List: ${artifacts_list}`,
                 text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
             };
-            core.setFailed("Veracode Deply Decision: Deny");
+            core.setFailed("Veracode Deploy Decision: Deny");
         }
         const checkRun = await octokit.request(`PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}`, {
             owner,
@@ -31951,9 +31951,8 @@ async function run() {
             }
         });
         console.log(JSON.stringify(checkRun));
-        core.setOutput("check_run_id", checkRun.id);
-        core.setOutput("check_run_url", checkRun.html_url);
-        core.info(`Check Run created successfully`);
+        core.setOutput("status", responseBody.verdict);
+        core.setOutput("summary", `Repository: ${repository}\nArtifacts List: ${artifacts_list}`);
     }
     catch (error) {
         core.setFailed("Error in Pipeline: " + error.message);
