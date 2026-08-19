@@ -72,7 +72,14 @@ async function run() {
             checkRunObj.output = {
                 title: "Veracode : Safe to Deploy !",
                 summary: `Artifacts List: ${artifacts_list}`,
-                text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
+                text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`,
+                images: [
+                    {
+                         alt: "Safe to Deploy",
+                        caption: "Veracode Safe to Deploy",
+                        image_url: 'https://www.veracode.com/wp-content/uploads/2025/01/VER-Symbol-Full-Reversed.svg'
+                    }
+                ]
             };
             core.info("Veracode Deply Decision: Allow");
         }else if(responseBody.verdict === "UNSAFE" && decision_mode === "observer") {
