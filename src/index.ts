@@ -11,9 +11,9 @@ async function run() {
         const branch = core.getInput("source_branch");
         const repository = core.getInput("repository");
         const artifacts_list = core.getInput("artifacts_list");
-        const pull_request = core.getInput("pull_request");
+        const pull_number = core.getInput("pull_request");
         const octokit = github.getOctokit(token);
-        console.log(JSON.stringify(pull_request));
+        console.log(JSON.stringify(pull_number));
          const branchObj = await octokit.request(`GET /repos/{owner}/{repo}/branches/{branch}`,{  owner,
             repo,
             branch,
@@ -96,7 +96,19 @@ async function run() {
             core.setFailed("Veracode Deploy Decision: Deny");
         }
 
+        const comments = await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', {
+            owner, 
+            repo,
+            pull_number,
+            body: '<h1>Great stuff!</h1>',
+            commit_id: sha,
+            path: 'README.md',
+            headers: {
+                'X-GitHub-Api-Version': '2026-03-10'
+            }
+            });
 
+        JSON.stringify(comments);
 
         
         
