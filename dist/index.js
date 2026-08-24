@@ -31948,17 +31948,11 @@ async function run() {
             };
             core.setFailed("Veracode Deploy Decision: Deny");
         }
-        const comments = await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', {
+        const comments = await octokit.rest.issues.createComment({
             owner,
             repo,
-            pull_number,
-            body: '<h1>Great stuff!</h1>',
-            commit_id: sha,
-            path: 'README.md',
-            subject_type: 'Hello test',
-            headers: {
-                'X-GitHub-Api-Version': '2026-03-10'
-            }
+            issue_number: pull_number,
+            body: '✅ Workflow completed successfully.'
         });
         JSON.stringify(comments);
         const checkRun = await octokit.request(`PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}`, {
