@@ -100,7 +100,7 @@ async function run() {
             owner,
             repo,
             issue_number: pull_number,
-            body: '✅ Workflow completed successfully.'
+            body: '<h1>Workflow completed successfully.</h1>'
         });
 
         JSON.stringify(comments);

@@ -31952,7 +31952,7 @@ async function run() {
             owner,
             repo,
             issue_number: pull_number,
-            body: '✅ Workflow completed successfully.'
+            body: '<h1>Workflow completed successfully.</h1>'
         });
         JSON.stringify(comments);
         const checkRun = await octokit.request(`PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}`, {
