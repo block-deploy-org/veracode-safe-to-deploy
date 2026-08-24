@@ -33,6 +33,9 @@ inputs:
   source_branch:
     description: 'source branch of the pull request'
     required: true
+  pull_request:
+    description: 'Pull request number'
+    required: false
   
 
 runs:

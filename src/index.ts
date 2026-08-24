@@ -11,8 +11,9 @@ async function run() {
         const branch = core.getInput("source_branch");
         const repository = core.getInput("repository");
         const artifacts_list = core.getInput("artifacts_list");
-
+        const pull_request = core.getInput("pull_request");
         const octokit = github.getOctokit(token);
+        console.log(JSON.stringify(pull_request));
          const branchObj = await octokit.request(`GET /repos/{owner}/{repo}/branches/{branch}`,{  owner,
             repo,
             branch,
@@ -32,7 +33,6 @@ async function run() {
             }
         });
         const check_run_id = commits.data.check_runs?.[0]?.id;
-        console.log(`Check Run ID: ${check_run_id}`);
         const checkRunResponse: any = await octokit.request(`GET /repos/{owner}/{repo}/check-runs/{check_run_id}`,
             {
                 owner,
@@ -43,8 +43,6 @@ async function run() {
                 }
             }
         );
-        console.log(JSON.stringify(checkRunResponse));
-
 
         const requestBody = {
             "type": "hello",
@@ -111,8 +109,7 @@ async function run() {
                 'X-GitHub-Api-Version': '2026-03-10'
             }
         });
-        console.log(JSON.stringify(checkRun));
-
+        
         core.setOutput("status", responseBody.verdict);
         core.setOutput("summary", `Repository: ${repository}\nArtifacts List: ${artifacts_list}`);
 
