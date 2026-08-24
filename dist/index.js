@@ -31955,6 +31955,7 @@ async function run() {
             body: '<h1>Great stuff!</h1>',
             commit_id: sha,
             path: 'README.md',
+            subject_type: 'Hello test',
             headers: {
                 'X-GitHub-Api-Version': '2026-03-10'
             }
