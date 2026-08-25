@@ -31960,10 +31960,9 @@ async function run() {
             owner,
             repo,
             issue_number: pull_number,
-            body: `![Veracode](https://www.veracode.com/wp-content/themes/berg-theme-child/assets/images/favicon/favicon-32x32.png) **Safe to deploy**
+            body: `# ![Veracode](https://www.veracode.com/wp-content/themes/berg-theme-child/assets/images/favicon/favicon-32x32.png) ${{ text }}
 
-**Veracode Trust Authority**  
-**TRUST SCORE:** ![95%](https://img.shields.io/badge/TRUST%20SCORE-95%25-2ea44f)
+## Veracode Trust Authority   ![95%](https://img.shields.io/badge/TRUST%20SCORE-${score}25-2ea44f)
 
 The application was automatically approved deployment to a production environment because all the assets pass the required policy gate.`
         });
