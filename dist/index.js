@@ -31960,7 +31960,7 @@ async function run() {
             owner,
             repo,
             issue_number: pull_number,
-            body: `# ![Veracode](https://www.veracode.com/wp-content/themes/berg-theme-child/assets/images/favicon/favicon-32x32.png) ${{ text }}
+            body: `# ![Veracode](https://www.veracode.com/wp-content/themes/berg-theme-child/assets/images/favicon/favicon-32x32.png) ${text}
 
 ## Veracode Trust Authority   ![95%](https://img.shields.io/badge/TRUST%20SCORE-${score}25-2ea44f)
 
