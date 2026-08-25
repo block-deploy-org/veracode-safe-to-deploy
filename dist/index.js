@@ -31961,7 +31961,7 @@ async function run() {
             repo,
             issue_number: pull_number,
             body: `<div style="display: flex;"> 
-        <div style="margin: 0px 10px;"><img src="favicon.avif"/></div>
+        <div style="margin: 0px 10px;"><img src="https://www.veracode.com/wp-content/themes/berg-theme-child/assets/images/favicon/favicon-32x32.png"/></div>
         <div style="display: flex;align-items: center;font-weight: bold;font-size: x-large;">Safe to deploy</div>
     </div>
     <div style="display: flex; margin:10px 0px;">
