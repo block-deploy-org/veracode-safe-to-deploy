@@ -31960,46 +31960,12 @@ async function run() {
             owner,
             repo,
             issue_number: pull_number,
-            body: `<div style="display: flex;"> 
-        <div style="margin: 0px 10px;"><img src="https://www.veracode.com/wp-content/themes/berg-theme-child/assets/images/favicon/favicon-32x32.png"/></div>
-        <div style="display: flex;align-items: center;font-weight: bold;font-size: x-large;">Safe to deploy</div>
-    </div>
-    <div style="display: flex; margin:10px 0px;">
-        <div style="font-weight: bolder;margin: 0px 10px;"> Veracode Trust Authority</div>
-        <div><div style="
-            display: inline-flex;
-            align-items: center;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            border-radius: 4px;
-            overflow: hidden;
-            height: 20px;
-            ">
-            <span style="
-                background-color: #2b3036;
-                color: #ffffff;
-                padding: 0 8px;
-                display: flex;
-                align-items: center;
-                height: 100%;
-                text-transform: uppercase;
-            ">Trust Score</span>
-            <span style="
-                background-color: #2e7d32;
-                color: #ffffff;
-                padding: 0 8px;
-                display: flex;
-                align-items: center;
-                height: 100%;
-            ">95%</span>
-            </div
-        ></div>
-    </div>
-    <div style="margin: 10px 10px;">
-        The application was automatically approved deployment to a production environment because all the assets pass the required policy gate.
-    </div>`
+            body: `![Veracode](https://www.veracode.com/wp-content/themes/berg-theme-child/assets/images/favicon/favicon-32x32.png) **Safe to deploy**
+
+**Veracode Trust Authority**  
+**TRUST SCORE:** ![95%](https://img.shields.io/badge/TRUST%20SCORE-95%25-2ea44f)
+
+The application was automatically approved deployment to a production environment because all the assets pass the required policy gate.`
         });
         JSON.stringify(comments);
         const checkRun = await octokit.request(`PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}`, {
