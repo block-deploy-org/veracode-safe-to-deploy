@@ -64,7 +64,8 @@ async function run() {
             },
             body: JSON.stringify(requestBody)
         });
-        
+        let score: number | string;
+        let text = '';
         const responseBody = await response.json();
         if(responseBody.verdict === "SAFE" ) {
             checkRunObj.output = {
@@ -80,6 +81,8 @@ async function run() {
                 ]
             };
             core.info("Veracode Deply Decision: Allow");
+            score = '95%';
+            text = 'Safe to deploy!';
         }else if(responseBody.verdict === "UNSAFE" && decision_mode === "observer") {
             checkRunObj.output = {
                 title: "Warning! Unsafe to Deploy, Pipeline is in Observer Mode",
@@ -87,6 +90,8 @@ async function run() {
                 text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
             };
             core.info("Veracode Deply Decision: Observer Mode: Allow");
+            score = '95%';
+            text = 'Not Safe to deploy!';
         }else{
             checkRunObj.output = {
                 title: "Blocking Deplyment! Unsafe to Deploy",
@@ -94,13 +99,54 @@ async function run() {
                 text: `Repository: ${repository}\nArtifacts List: ${artifacts_list}`
             };
             core.setFailed("Veracode Deploy Decision: Deny");
+            score = '15%';
+            text = 'Blocking deployment!';
         }
 
         const comments = await octokit.rest.issues.createComment({
             owner,
             repo,
             issue_number: pull_number,
-            body: '<h1>Workflow completed successfully.</h1>'
+            body: `<div style="display: flex;"> 
+        <div style="margin: 0px 10px;"><img src="favicon.avif"/></div>
+        <div style="display: flex;align-items: center;font-weight: bold;font-size: x-large;">Safe to deploy</div>
+    </div>
+    <div style="display: flex; margin:10px 0px;">
+        <div style="font-weight: bolder;margin: 0px 10px;"> Veracode Trust Authority</div>
+        <div><div style="
+            display: inline-flex;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border-radius: 4px;
+            overflow: hidden;
+            height: 20px;
+            ">
+            <span style="
+                background-color: #2b3036;
+                color: #ffffff;
+                padding: 0 8px;
+                display: flex;
+                align-items: center;
+                height: 100%;
+                text-transform: uppercase;
+            ">Trust Score</span>
+            <span style="
+                background-color: #2e7d32;
+                color: #ffffff;
+                padding: 0 8px;
+                display: flex;
+                align-items: center;
+                height: 100%;
+            ">95%</span>
+            </div
+        ></div>
+    </div>
+    <div style="margin: 10px 10px;">
+        The application was automatically approved deployment to a production environment because all the assets pass the required policy gate.
+    </div>`
         });
 
         JSON.stringify(comments);
